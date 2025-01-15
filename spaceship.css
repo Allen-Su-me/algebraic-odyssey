@@ -1,0 +1,180 @@
+#spaceship-interface {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#spaceship-interface.hidden {
+    display: none;
+}
+
+.spaceship-window {
+    background: linear-gradient(45deg, #1a1a2e, #16213e);
+    border: 2px solid #4a5568;
+    border-radius: 15px;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    box-shadow: 0 0 20px rgba(0, 100, 255, 0.3);
+    display: flex;
+    flex-direction: column;
+}
+
+.spaceship-header {
+    padding: 1rem;
+    border-bottom: 2px solid #4a5568;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.lesson-title {
+    font-family: 'Orbitron', sans-serif;
+    color: #00ff9d;
+    margin: 0;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.spaceship-content {
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto auto;
+    grid-gap: 2rem;
+    height: calc(100% - 70px);
+    overflow-y: auto;
+}
+
+.mission-brief {
+    background: rgba(255, 157, 0, 0.1);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid #4a5568;
+}
+
+.concept-explanation {
+    background: rgba(0, 100, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid #4a5568;
+}
+
+.problem-section {
+    grid-column: 1 / -1;
+    background: rgba(0, 255, 157, 0.1);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid #4a5568;
+}
+
+.problem-text {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #00ff9d;
+}
+
+.graph-panel {
+    grid-column: 1 / -1;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    min-height: 300px;
+}
+
+.control-panel {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 1rem;
+}
+
+#answer-input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #4a5568;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    color: #fff;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+#submit-answer {
+    background: linear-gradient(45deg, #00ff9d, #00d6ff);
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 2rem;
+    color: #1a1a2e;
+    font-family: 'Orbitron', sans-serif;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+#submit-answer:hover {
+    transform: scale(1.05);
+}
+
+#wormhole-challenge {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+}
+
+#wormhole-challenge.hidden {
+    display: none;
+}
+
+#wormholeCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.challenge-ui {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    pointer-events: none;
+    padding-top: 5vh;
+}
+
+.question-panel {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 15vh;
+    max-width: 800px;
+    text-align: center;
+}
+
+.progress-indicator {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 1rem;
+    border-radius: 5px;
+}

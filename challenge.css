@@ -1,0 +1,276 @@
+.mission-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1002;
+}
+
+.mission-content {
+    background: rgba(0, 40, 80, 0.95);
+    border: 2px solid #00ffff;
+    border-radius: 10px;
+    padding: 2rem;
+    max-width: 600px;
+    width: 90%;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    z-index: 1002;
+}
+
+.mission-content h2 {
+    color: #00ffff;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.mission-details {
+    margin: 1rem 0;
+}
+
+.mission-details ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.mission-details li {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.mission-details li:before {
+    content: "►";
+    color: #00ffff;
+    position: absolute;
+    left: 0;
+}
+
+.start-mission {
+    display: block;
+    margin: 2rem auto 0;
+    padding: 1rem 2rem;
+    background: #00ffff;
+    border: none;
+    border-radius: 5px;
+    color: #000;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.start-mission:hover {
+    background: #fff;
+    transform: scale(1.05);
+}
+
+.status-panel {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 30, 60, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #00ffff;
+    color: #00ffff;
+    font-family: 'Space Grotesk', sans-serif;
+    width: 80%;
+    max-width: 800px;
+    display: flex;
+    justify-content: space-between;
+}
+.main-info {
+    flex: 3;
+    padding-right: 20px;
+}
+.side-info {
+    flex: 1;
+    border-left: 2px solid #00ffff;
+    padding-left: 20px;
+    font-size: 1em;
+}
+.steering-wheel {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    /* Create a wrapper for the wheel that handles centering */
+    transform: translateX(-50%);
+    width: 175px;
+    height: 175px;
+    background: rgba(0, 30, 60, 0.5);
+    border-radius: 50%;
+    border: 2px solid #00ffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    z-index: 1001;
+}
+
+/* Add new class for the wheel image container */
+.wheel-rotator {
+    width: 80%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease-out;
+}
+
+.steering-wheel img {
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+}
+
+.crack-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('/path/to/crack-overlay.png') no-repeat center/cover;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.challenge-btn {
+    background: linear-gradient(45deg, #00ff9d, #00d6ff);
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    color: #1a1a2e;
+    font-family: 'Orbitron', sans-serif;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.emergency-alert {
+    color: #ff0000;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    animation: blink 1s infinite;
+    font-weight: bold;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+.question {
+    font-size: 1.5em;
+    margin-top: 10px;
+}
+.answer-panel {
+    position: fixed;
+    bottom: 200px; /* Above steering wheel */
+    width: 25%;
+    height: 60px;
+    background: rgba(0, 30, 60, 0.8);
+    border: 2px solid #00ffff;
+    border-radius: 10px;
+    color: #00ffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px;
+    transition: all 0.3s ease;
+    z-index: 1001;
+    transform: translateX(-50%); /* Center the panel */
+}
+
+.answer-panel.selected {
+    background: rgba(0, 255, 255, 0.2);
+    transform: translateX(-50%) scale(1.1);
+}
+
+.answer-panel span {
+    max-width: 90%;
+    overflow-wrap: break-word;
+    text-align: center;
+}
+
+.answer-panel.active {
+    background: rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 10px #00ffff;
+    transition: all 0.3s ease;
+}
+
+/* Eject button styles */
+.eject-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #ff3333;
+    border: 2px solid #ff6666;
+    border-radius: 5px;
+    color: white;
+    padding: 10px 20px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 1001;
+    transition: all 0.3s ease;
+}
+
+.eject-button:hover {
+    background: #ff6666;
+    transform: scale(1.05);
+}
+
+/* Confirmation dialog styles */
+.confirm-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 40, 80, 0.95);
+    border: 2px solid #ff3333;
+    border-radius: 10px;
+    padding: 2rem;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+    z-index: 1004;
+}
+
+.confirm-dialog h3 {
+    color: #ff3333;
+    margin-bottom: 1rem;
+}
+
+.confirm-dialog .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.confirm-dialog button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-family: 'Orbitron', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.confirm-dialog .confirm {
+    background: #ff3333;
+    color: white;
+}
+
+.confirm-dialog .cancel {
+    background: #333;
+    color: white;
+}
+
+.confirm-dialog button:hover {
+    transform: scale(1.05);
+}
