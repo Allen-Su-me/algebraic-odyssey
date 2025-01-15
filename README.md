@@ -77,10 +77,10 @@ By combining these elements, I aimed to create an immersive learning experience 
 
 The project aims to demonstrate how modern web technologies can transform educational experiences, making learning more engaging and effective through immersive gameplay.
 
-🖥️ Setup
-Clone the repository
-Open index.html in a modern web browser
-Begin your mathematical space odyssey!
+## 🖥️ Setup
+1. Clone the repository
+2. Open index.html in a modern web browser
+3. Begin your mathematical space odyssey!
 ---
 
 This project was created for the Hackathon division, showcasing the intersection of education, gaming, and web technologies.
