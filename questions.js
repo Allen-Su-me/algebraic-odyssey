@@ -38,7 +38,7 @@ const QUESTIONS = {
     ],
     "Slope between Two Points": [
         {
-            text: "What is the formula for the slope (m) between two points (x1, y1) and (x2, y2)?",
+            text: "What is the formula for the slope between two points (x1, y1) and (x2, y2)?",
             answer: "(y2 - y1) / (x2 - x1)",
             options: ["(y2 - y1) / (x2 - x1)", "(x2 - x1) / (y2 - y1)", "(y1 - y2) / (x2 - x1)", "(x1 - x2) / (y1 - y2)", "(x1 + x2) / (y1 + y2)"],
         },

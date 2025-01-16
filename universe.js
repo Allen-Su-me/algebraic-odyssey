@@ -140,7 +140,6 @@ class Planet {
         this.mesh.add(sprite);
 
         this.completedLessons = this.loadCompletedLessons();
-        console.log(this.completedLessons);
         this.isReadyForChallenge = this.checkChallengeReadiness();
         
         // Check if challenge is completed

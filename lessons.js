@@ -1,28 +1,96 @@
 const LAYOUT={
-    title: '',
+    title: {
+        text: '',
+        standoff: 0,
+    },
     xaxis: { 
-        title: 'X Position', 
-        gridcolor: '#fff',
-        range: [-1, 5],
+        title: {
+            text: 'X Position',
+            standoff: 10,
+        },
+        gridcolor: '#444',
+        gridwidth: 2,
+        zerolinecolor: '#fff',//axis
+        zerolinewidth: 2,
+        range: [-1, 5],      
+        showline: true,//border line
+        linecolor: '#444',
+        linewidth: 2,
         dtick: 1,
-        showline: true,
-        color: '#fff',
+        tickangle: 0, //upright
     },
     yaxis: { 
-        title: 'Y Position', 
-        gridcolor: '#fff',
-        range: [-1, 5],
-        dtick: 1,
+        title: {
+            text: 'Y Position',
+            standoff: 5,
+        }, 
+        gridcolor: '#444',
+        gridwidth: 2,
+        zerolinecolor: '#fff',
+        zerolinewidth: 2,
+        range: [-1, 5],       
         showline: true,
-        color: '#fff',
+        linecolor: '#444',
+        linewidth: 2,
+        dtick: 1,
+        tickangle: 0,
     },
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
     font: { color: '#fff' , size: 14 },
     template: 'plotly_dark',
-    width: 300,
-    height: 300
+    width: 350,
+    height: 350
 };
+function drawInequailty(name,m,c,sign,xRange,yRange){
+
+    // Calculate y values for the line
+    const yValue = xRange.map(x => m * x + c);
+
+    // Define the shaded region based on the inequality sign
+    let xFill, yFill, fillColor;
+
+    if (sign === '>') {
+        // Region above the line
+        xFill = [...xRange, xRange[1], xRange[0]]; // Close the polygon
+        yFill = [...yValue, yRange[1], yRange[1]]; // Extend above the line
+        fillColor = 'rgba(0, 255, 0, 0.5)'; // Semi-transparent green
+        
+    } else if (sign === '>=') {
+        // Region above or on the line
+        xFill = [...xRange, xRange[1], xRange[0]]; // Close the polygon
+        yFill = [...yValue, yRange[1], yRange[1]]; // Extend above the line
+        fillColor = 'rgba(0, 0, 255, 0.5)'; // Semi-transparent blue
+        
+    } else if (sign === '<') {
+        // Region below the line
+        xFill = [...xRange, xRange[1], xRange[0]]; // Close the polygon
+        yFill = [...yValue, yRange[0], yRange[0]]; // Extend below the line
+        fillColor = 'rgba(255, 0, 0, 0.5)'; // Semi-transparent red
+        
+    } else if (sign === '<=') {
+        // Region below or on the line
+        xFill = [...xRange, xRange[1], xRange[0]]; // Close the polygon
+        yFill = [...yValue, yRange[0], yRange[0]]; // Extend below the line
+        fillColor = 'rgba(255, 165, 0, 0.5)'; // Semi-transparent orange
+        
+    } else {
+        console.error("Invalid inequality sign. Use one of '>', '<', '>=', '<='.");
+        return;
+    }
+
+    // Define the fill trace for the half-plane
+    const fillTrace = {
+        x: xFill,
+        y: yFill,
+        fill: 'toself',
+        fillcolor: fillColor,
+        line: { width: 0 },
+        name: name,         
+    };
+           
+    return fillTrace;
+}
 const LESSONS = {
     "Introduction to the Coordinate Plane": {
         name: "Introduction to the Coordinate Plane",
@@ -55,7 +123,7 @@ const LESSONS = {
                     }
                 };
                 var layout = LAYOUT;
-                layout.title = 'Space Navigation Map';
+                layout.title.text = 'Space Navigation Map';
                 plot.newPlot('plotArea', [trace1, trace2], layout);
             }
         }
@@ -64,7 +132,7 @@ const LESSONS = {
         name: "Slope between Two Points",
         title: "Calculating Interstellar Trajectories",
         mission: "Your spaceship needs to travel between two space stations. Calculate the slope of the trajectory to ensure a smooth journey.",
-        concept: "Imagine drawing a line between two stars. The slope tells us how steep that line is. In space, this helps us understand the angle of our travel path. A larger slope means a steeper climb or descent. We calculate slope by dividing the change in the vertical position (rise) by the change in the horizontal position (run). The formula is: Slope = (y₂ - y₁) / (x₂ - x₁).",
+        concept: "Imagine drawing a line between two stars. The slope tells us how steep that line is. In space, this helps us understand the angle of our travel path. A larger slope means a steeper climb or descent. We calculate slope by dividing the change in the vertical position (rise) by the change in the horizontal position (run). The formula is: Slope = rise / run = (y₂ - y₁) / (x₂ - x₁).",
         problem: {
             question: "Two space stations are located at coordinates (1, 1) and (3, 5). What is the slope of the trajectory between them?",
             answer: ["2", "2.0"], 
@@ -73,12 +141,12 @@ const LESSONS = {
                 const trace = {
                     x: [1, 3],
                     y: [1, 5],
-                    mode: 'lines+markers',
+                    mode: 'lines',
                     name: 'Trajectory',
                     marker: { size: 12, color: 'lime' }
-                };
+                };               
                 var layout = LAYOUT;
-                layout.title = 'Interstellar Path';
+                layout.title.text = 'Interstellar Path';
                 plot.newPlot('plotArea', [trace], layout);
             }
         }
@@ -96,35 +164,57 @@ const LESSONS = {
                 const trace = {
                     x: [0, 4],
                     y: [0, 3],
-                    mode: 'lines+markers',
+                    mode: 'lines',
                     name: 'Distance',
                     marker: { size: 12, color: 'yellow' }
                 };
+                const trace1 = {
+                    x: [0],
+                    y: [0],
+                    mode: 'markers',
+                    name: 'Spaceship',
+                    marker: {
+                        size: 12,
+                        color: 'blue'
+                    }
+                };
+                const trace2 = {
+                    x: [4],
+                    y: [3],
+                    mode: 'markers',
+                    name: 'Satellite',
+                    marker: {
+                        size: 12,
+                        color: 'gray'
+                    }
+                };
                 var layout = LAYOUT;
-                layout.title = 'Cosmic Distance';
-                plot.newPlot('plotArea', [trace], layout);
+                layout.title.text = 'Cosmic Distance';
+                plot.newPlot('plotArea', [trace,trace1,trace2], layout);
             }
         }
     },
     "Slope of a Line": {
         name: "Slope of a Line",
-        title: "Understanding Spacecraft Ascent Angles",
-        mission: "Launching a rocket requires a precise ascent angle. This angle is determined by the slope of its path.",
-        concept: "The slope of a line tells us how steep it is and in what direction it's going. Imagine a rocket launching – a higher slope means a steeper climb. We can find the slope using any two points on the line with the formula: Slope (m) = (change in y) / (change in x). A positive slope means the line goes up as you move to the right, and a negative slope means it goes down.",
+        title: "Spacecraft Flight Paths",
+        mission: "Space pilots need to understand flight paths. The steepness of these paths is called slope!",
+        concept: "Every spacecraft follows a straight path that can be written as y=mx+b. The 'm' in this formula is the slope - it tells us how steep the path is! Imagine you're a space pilot: if m=1, your ship goes up at a 45° angle. If m=2, it's steeper, going up twice as fast. Negative slopes mean you're heading down toward a planet. The bigger the number, the steeper your flight path!",
         problem: {
-            question: "A rocket's path passes through the points (0, 1) and (2, 5). What is the slope of the rocket's ascent?",
-            answer: ["2", "2.0"],
+            question: "A spacecraft follows the path y=3x+1. What is the slope (m) of its flight path?",
+            answer: ["3", "3.0"],
             tolerance: 0,
             plotFunction: (plot) => {
                 const trace = {
-                    x: [0, 2],
-                    y: [1, 5],
-                    mode: 'lines+markers',
-                    name: 'Rocket Path',
-                    marker: { size: 12, color: 'orange' }
+                    x: [-1, 3],
+                    y: [-2, 10],
+                    mode: 'lines', 
+                    name: 'Spacecraft Path',
+                    line: { color: 'orange' },
+                    showlegend: true //needed when there is only one trace
                 };
                 var layout = LAYOUT;
-                layout.title = 'Rocket Ascent';
+                layout.title.text = 'Spacecraft Flight Path';
+                layout.width = 400;
                 plot.newPlot('plotArea', [trace], layout);
             }
         }
@@ -144,10 +234,12 @@ const LESSONS = {
                     y: [-1, 7],
                     mode: 'lines',
                     name: 'Spacecraft Trajectory',
-                    line: { color: 'cyan' }
+                    line: { color: 'cyan' },
+                    showlegend: true
                 };
                 var layout = LAYOUT;
-                layout.title = 'Course Plot';
+                layout.title.text = 'Course Plot';
+                layout.width = 450;
                 plot.newPlot('plotArea', [trace], layout);
             }
         }
@@ -158,19 +250,21 @@ const LESSONS = {
         mission: "You need to visualize different possible routes to a distant planet by graphing their equations.",
         concept: "Graphing a line is like drawing a map of a potential space route. To graph a line from its equation, we can find at least two points that lie on the line. One easy way is to pick a value for 'x', plug it into the equation, and solve for 'y'. Then plot these (x, y) points and connect them with a straight line.",
         problem: {
-            question: "Graph the path of a probe defined by the equation y = -x + 4. What are the coordinates of two points the probe will pass through?",
-            answer: ["(0,4),(4,0)", "(4,0),(0,4)"],
+            question: "Graph the path of a probe defined by the equation y = -2x + 4. What are the coordinates of two points the probe will pass through, if we choose x = 0 and y = 0 respectively?",
+            answer: ["(0,4),(2,0)", "(2,0),(0,4)"],
             tolerance: 0,
             plotFunction: (plot) => {
                 const trace = {
                     x: [-1, 5],
-                    y: [5, -1],
-                    mode: 'lines+markers',
+                    y: [6, -6],
+                    mode: 'lines',
                     name: 'Probe Path',
-                    marker: { size: 8, color: 'magenta' }
+                    line: { color: 'magenta' },
+                    showlegend: true
                 };
                 var layout = LAYOUT;
-                layout.title = 'Visualizing Routes';
+                layout.title.text = 'Visualizing Routes';
+                layout.width = 400;
                 plot.newPlot('plotArea', [trace], layout);
             }
         }
@@ -189,14 +283,14 @@ const LESSONS = {
                     x: [0, 5],
                     y: [5, 0],
                     mode: 'lines',
-                    name: 'Probe A',
+                    name: 'x + y = 5',
                     line: { color: 'lightblue' }
                 };
                 const trace2 = {
                     x: [0, 5],
                     y: [-1, 4],
                     mode: 'lines',
-                    name: 'Probe B',
+                    name: 'x - y = 1',
                     line: { color: 'lightcoral' }
                 };
                 const intersection = {
@@ -207,7 +301,7 @@ const LESSONS = {
                     marker: { size: 10, color: 'white' }
                 };
                 var layout = LAYOUT;
-                layout.title = 'Intercept Point';
+                layout.title.text = 'Intercept Point';
                 plot.newPlot('plotArea', [trace1, trace2, intersection], layout);
             }
         }
@@ -223,17 +317,17 @@ const LESSONS = {
             tolerance: 0,
             plotFunction: (plot) => {
                 const trace1 = {
-                    x: [-1, 3],
-                    y: [0, 4],
+                    x: [-1, 5],
+                    y: [0, 6],
                     mode: 'lines',
-                    name: 'Satellite Orbit 1',
+                    name: 'y = x + 1',
                     line: { color: 'lightgreen' }
                 };
                 const trace2 = {
-                    x: [-1, 3],
-                    y: [4, 0],
+                    x: [-1, 5],
+                    y: [4, -2],
                     mode: 'lines',
-                    name: 'Satellite Orbit 2',
+                    name: 'y = -x + 3',
                     line: { color: 'lightsalmon' }
                 };
                 const intersection = {
@@ -244,7 +338,7 @@ const LESSONS = {
                     marker: { size: 10, color: 'white' }
                 };
                 var layout = LAYOUT;
-                layout.title = 'Orbital Intersection';
+                layout.title.text = 'Orbital Intersection';
                 plot.newPlot('plotArea', [trace1, trace2, intersection], layout);
             }
         }
@@ -260,21 +354,21 @@ const LESSONS = {
             tolerance: 0,
             plotFunction: (plot) => {
                 const trace1 = {
-                    x: [-1, 3],
-                    y: [-1, 7],
+                    x: [-3, 3],
+                    y: [-5, 7],
                     mode: 'lines',
-                    name: 'Spacecraft A',
+                    name: 'y = 2x + 1',
                     line: { color: 'gold' }
                 };
                 const trace2 = {
-                    x: [-1, 3],
-                    y: [1, 9],
+                    x: [-3, 3],
+                    y: [-3, 9],
                     mode: 'lines',
-                    name: 'Spacecraft B',
+                    name: 'y = 2x + 3',
                     line: { color: 'silver' }
                 };
                 var layout = LAYOUT;
-                layout.title = 'Space Traffic Analysis';
+                layout.title.text = 'Space Traffic Analysis';
                 plot.newPlot('plotArea', [trace1, trace2], layout);
             }
         }
@@ -282,17 +376,17 @@ const LESSONS = {
     "Understanding Inequalities": {
         name: "Understanding Inequalities",
         title: "Defining Safe Zones in Space",
-        mission: "Identify the safe zone for landing on a planet, which is defined by certain boundary conditions represented by inequalities.",
+        mission: "Identify the safe zone for flying on a planet, which is defined by certain boundary conditions represented by inequalities.",
         concept: "Inequalities are like equations, but instead of an equals sign, they use symbols like > (greater than), < (less than), ≥ (greater than or equal to), or ≤ (less than or equal to). They help us define regions or ranges of values. For instance, if we need to stay above a certain altitude, that can be represented by an inequality.",
         problem: {
-            question: "A safe landing zone on a planet requires the x-coordinate to be greater than 1. Write this condition as an inequality.",
-            answer: ["x>1", "x > 1"],
+            question: "If the safety flying zone on a planet cannot be lower than 1 unit of altitude, write this as an inequality.",
+            answer: ["y>=1", "y >= 1"],
             tolerance: 0,
             plotFunction: (plot) => {
                 // Parameters for the line: y = mx + c
-                const m = 2; // slope
-                const c = 3; // y-intercept
-                const sign = '<'; // Inequality sign ('>', '<', '>=', '<=')
+                const m = 0; // slope
+                const c = 1; // y-intercept
+                const sign = '>='; // Inequality sign ('>', '<', '>=', '<=')
                 const xRange = [-3, 5]; // x-range for the line
                 const yRange = [-1, 5]; // y-range for the visualization
             
@@ -336,8 +430,9 @@ const LESSONS = {
                     x: xRange,
                     y: yValue,
                     mode: 'lines',
-                    line: { color: 'violet' },
-                    name: `y = ${m}x ${c>=0?'+':'-'} ${Math.abs(c)}`,
+                    line: { color: 'cyan' },
+                    name: 'Boundary Line',
+                    //name: `y = ${m}x ${c>=0?'+':'-'} ${Math.abs(c)}`,
                 };
             
                 // Define the fill trace for the half-plane
@@ -347,13 +442,15 @@ const LESSONS = {
                     fill: 'toself',
                     fillcolor: fillColor,
                     line: { width: 0 },
-                    name: inequalityLabel,
+                    name: 'Safe Zone', //name: inequalityLabel,
+                    
                 };
                        
                 var layout = LAYOUT;
-                layout.title = `Half-Plane Representation: ${inequalityLabel}`;
+                layout.title.text = 'Safe Flying Zone on Planet';
                 layout.xaxis.range = xRange;
                 layout.yaxis.range = yRange;
+                layout.width = 400;
                 plot.newPlot('plotArea', [fillTrace, lineTrace], layout);
             }
         }
@@ -364,20 +461,33 @@ const LESSONS = {
         mission: "Visualize the region of space where a spacecraft can safely operate, given constraints on its position defined by an inequality.",
         concept: "Graphing inequalities helps us see all the possible locations that satisfy a certain condition. For example, if a spacecraft needs to stay above a certain line, we can graph that inequality. We first graph the boundary line (as if it were an equation). Then, we shade the region that satisfies the inequality. If the inequality includes 'greater than' or 'less than', the boundary line is dashed to show it's not included.",
         problem: {
-            question: "Graph the inequality y > x. Which region represents the solutions?",
-            answer: ["above"],
+            question: "Assuming a spacecraft can only safely operate in the region y > x - 1. Which region represents the safe landing zone?",
+            answer: ["A","Region A"],
             tolerance: 0,
             plotFunction: (plot) => {
+                
+                const m = 1; 
+                const c = -1; 
+                
+                const xRange = [-3, 5]; 
+                const yRange = [-1, 5]; 
+            
+                const regionA = drawInequailty('Region A',m,c,'>=',xRange,yRange);
+                const regionB = drawInequailty('Region B',m,c,'<=',xRange,yRange);
                 const trace = {
-                    x: [-1, 5],
-                    y: [-1, 5],
+                    x: [-3, 5],
+                    y: [-4, 4],
                     mode: 'lines',
-                    name: 'Boundary y = x',
-                    line: { color: 'violet', dash: 'dash' }
+                    name: 'Boundary y = x - 1',
+                    line: { color: 'cyan', dash: 'dash' }
                 };
+
                 var layout = LAYOUT;
-                layout.title = 'Operational Boundaries';
-                plot.newPlot('plotArea', [trace], layout);
+                layout.title.text = 'Safe Landing Zone on Planet';
+                layout.xaxis.range = xRange;
+                layout.yaxis.range = yRange;
+                layout.width = 450;
+                plot.newPlot('plotArea', [regionA,regionB,trace], layout);
             }
         }
     },
@@ -406,7 +516,7 @@ const LESSONS = {
                     line: { color: 'deepskyblue', dash: 'dash' }
                 };
                 var layout = LAYOUT;
-                layout.title = 'Resource Constraints';
+                layout.title.text = 'Resource Constraints';
                 plot.newPlot('plotArea', [trace1, trace2], layout);
             }
         }

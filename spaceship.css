@@ -92,7 +92,10 @@
     grid-column: 1 / -1;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 10px;
-    min-height: 300px;
+    min-height: 350px;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
 }
 
 .control-panel {
