@@ -40,7 +40,7 @@ Algebraic Odyssey was my way of addressing these issues—bringing together the 
 - **🌟 Multiple Challenge Types**  
   - **Wormhole Navigation**: Multiple-choice questions to reinforce foundational algebra concepts.  
   - **Asteroid Field Navigation**: Real-time decision-making tasks to deepen your understanding of algebra through engaging challenges.
- - **Final Mission: Earth's Last Hope**: Engage in real-time strategic, grid-based battles that leverage all the algebra concepts you've learned to predict and counter elimination patterns. Please note that this feature is currently under development.
+  - **Final Mission: Earth's Last Hope**: Engage in real-time strategic, grid-based battles that leverage all the algebra concepts you've learned to predict and counter elimination patterns. Please note that this feature is currently under development.
 
 - **📂 Persistent Progress**  
   Keep track of your completed lessons and challenges with a save system that ensures your learning journey continues uninterrupted across the galaxy.
