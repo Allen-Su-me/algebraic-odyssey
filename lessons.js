@@ -144,10 +144,32 @@ const LESSONS = {
                     mode: 'lines',
                     name: 'Trajectory',
                     marker: { size: 12, color: 'lime' }
+                };
+                const trace1 = {
+                    x: [1],
+                    y: [1],
+                    mode: 'markers',
+                    name: 'Space station 1',
+                    marker: {
+                        size: 12,
+                        color: 'magenta'
+                    }
+                };
+                const trace2 = {
+                    x: [3],
+                    y: [5],
+                    mode: 'markers',
+                    name: 'Space station 2',
+                    marker: {
+                        size: 12,
+                        color: 'steelblue'
+                    }
                 };               
                 var layout = LAYOUT;
                 layout.title.text = 'Interstellar Path';
-                plot.newPlot('plotArea', [trace], layout);
+                layout.width = 400;
+                layout.yaxis.range = [-1, 6];
+                plot.newPlot('plotArea', [trace,trace1,trace2], layout);
             }
         }
     },
@@ -494,30 +516,68 @@ const LESSONS = {
     "Real-World Application - Linear Programming": {
         name: "Real-World Application - Linear Programming",
         title: "Optimizing Resource Allocation for a Space Mission",
-        mission: "You need to optimize the allocation of fuel and supplies for a long-duration space mission within given constraints.",
-        concept: "Linear programming is like finding the best way to do something when you have limits. Imagine you have a certain amount of fuel and oxygen for a space trip, and you want to maximize the time you can spend exploring. Linear programming uses inequalities to represent these limits and helps find the best solution.",
+        mission: "You need to optimize the allocation of fuel (f) and oxygen (o) for a long-duration space mission within given constraints.",
+        concept: "Linear programming helps find the optimal solution when we have multiple constraints. In space missions, we often need to balance different resources. These constraints form a feasible region - the area where all constraints are satisfied. The optimal solution usually lies at one of the corners of this region.",
         problem: {
-            question: "A space mission needs at least 2 units of fuel (f) and 1 unit of oxygen (o) to operate safely. Write the inequalities representing these constraints.",
-            answer: ["f>=2,o>=1"],
+            question: "Given the constraints: 2f + o ≥ 3, f + 2o ≤ 8, and f ≥ 0, o ≥ 0, which point (f,o) in the feasible region gives the minimum total resources (f + o)?",
+            answer: ["(1.5,0)", "(3/2,0)"],
             tolerance: 0,
             plotFunction: (plot) => {
+                // First constraint: 2f + o ≥ 3
+                const fillTrace1 = drawInequailty(
+                    '2f + o ≥ 3',
+                    -2, // slope
+                    3,  // intercept
+                    '>',
+                    [0, 5],
+                    [0, 5]
+                );
+
+                // Second constraint: f + 2o ≤ 8
+                const fillTrace2 = drawInequailty(
+                    'f + 2o ≤ 8',
+                    -0.5, // slope (-1/2)
+                    4,    // intercept
+                    '<=',
+                    [0, 5],
+                    [0, 5]
+                );
+
                 const trace1 = {
-                    x: [2, 2],
-                    y: [-1, 5],
+                    x: [0, 5],
+                    y: [3, -7],
                     mode: 'lines',
-                    name: 'Fuel Limit',
-                    line: { color: 'coral', dash: 'dash' }
+                    name: '2f + o = 3',
+                    line: { color: 'cyan' }
                 };
+
                 const trace2 = {
-                    x: [-1, 5],
-                    y: [1, 1],
+                    x: [0, 5],
+                    y: [4, 1.5],
                     mode: 'lines',
-                    name: 'Oxygen Limit',
-                    line: { color: 'deepskyblue', dash: 'dash' }
+                    name: 'f + 2o = 8',
+                    line: { color: 'violet' }
                 };
+
+                const optimalPoint = {
+                    x: [1.5],
+                    y: [0],
+                    mode: 'markers',
+                    name: 'Optimal Point',
+                    marker: {
+                        size: 10,
+                        color: 'white'
+                    }
+                };
+
                 var layout = LAYOUT;
-                layout.title.text = 'Resource Constraints';
-                plot.newPlot('plotArea', [trace1, trace2], layout);
+                layout.title.text = 'Resource Optimization';
+                layout.width = 450;
+                layout.xaxis.range = [0, 5];
+                layout.yaxis.range = [0, 5];
+                layout.xaxis.title.text = 'Fuel (f)';
+                layout.yaxis.title.text = 'Oxygen (o)';
+                plot.newPlot('plotArea', [fillTrace1, fillTrace2, trace1, trace2, optimalPoint], layout);
             }
         }
     }

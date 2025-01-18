@@ -4,6 +4,19 @@ class StarField {
         this.stars = [];
         this.createMilkyWayStripe();
         this.createCircularStars();
+        var colors=[
+            [0.63,0.60,0.1],  //yellow
+            [0.9,0.4,1.0],    //purple
+            [0.3,0.6,0.6],    //cyan
+            [0.8,0.2,0.6],    //magenta
+            [0.6,0.4,0.8],    //lavender
+            [0.4,0.8,0.4],    //lime
+        ].sort(() => Math.random() - 0.5);
+        
+        this.createSpiralGalaxy(-100,-50,-350,[Math.PI/6,Math.PI/4,0],colors[0]); 
+        this.createSpiralGalaxy(-310,-50,-180,[Math.PI/6,0,-Math.PI/6],colors[1]);
+        this.createSpiralGalaxy(-200,0,200,[-Math.PI/6,Math.PI/7,0],colors[2]); 
+        this.createSpiralGalaxy(180,0,200,[-Math.PI/6,Math.PI/6,0],colors[3]);
     }
 
     createMilkyWayStripe() {
@@ -104,6 +117,75 @@ class StarField {
         this.scene.add(this.stars);
     }
 
+    createSpiralGalaxy(dx,dy,dz,rotation,color) {
+        // First rotate the galaxy, then move it to desired position
+        const galaxyGeometry = new THREE.BufferGeometry();
+        const galaxyVertices = [];
+        const galaxyColors = [];
+
+        const numParticles = 6000;
+        const galaxyRadius = 50;
+        const spiralTightness = 0.8;
+        const verticalSpread = 10;       
+        // Create galaxy at origin first
+        for (let i = 0; i < numParticles; i++) {
+            const distance = Math.pow(Math.random(), 2) * galaxyRadius;
+            const angle = Math.random() * Math.PI * 2;
+            
+            // Add spiral effect
+            const spiralAngle = angle + (distance * spiralTightness * 0.01);
+            
+            // Calculate vertical spread (thinner at edges)
+            const heightSpread = (1 - (distance / galaxyRadius)) * verticalSpread;
+            const height = (Math.random() - 0.5) * heightSpread;
+            
+            const x = distance * Math.cos(spiralAngle);
+            const z = (distance * Math.sin(spiralAngle)) * 0.5; // Compress for oval shape
+            galaxyVertices.push(x, height, z);
+            
+            // Color gradient based on distance from center
+            const distanceFromCenter = distance / galaxyRadius;
+            if (distanceFromCenter < 0.2) {
+                // Bright core
+                galaxyColors.push(1, 0.95, 0.6);
+            } else if (distanceFromCenter < 0.6) {
+                // Mid-region blend
+                
+                galaxyColors.push(color[0], color[1], color[2]);
+            } else {
+                // Outer region
+                galaxyColors.push(0.58, 0.51, 0.89);
+            }
+        }
+
+        galaxyGeometry.setAttribute('position', new THREE.Float32BufferAttribute(galaxyVertices, 3));
+        galaxyGeometry.setAttribute('color', new THREE.Float32BufferAttribute(galaxyColors, 3));
+
+        const galaxyMaterial = new THREE.PointsMaterial({
+            size: 1.2,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,  // Changed from true to false
+            depthTest: true,
+            sizeAttenuation: true  // Add this to maintain point size with distance
+        });
+
+        this.spiralGalaxy = new THREE.Points(galaxyGeometry, galaxyMaterial);
+
+        // Apply rotations first
+        this.spiralGalaxy.rotation.x = rotation[0];
+        this.spiralGalaxy.rotation.y = rotation[1];
+        this.spiralGalaxy.rotation.z = rotation[2];
+
+        // Then translate to final position
+        this.spiralGalaxy.position.set(dx, dy, dz);
+
+        this.scene.add(this.spiralGalaxy);
+        
+    }
+
     animate() {
         // Subtle twinkling effect for stars
         const colors = this.stars.geometry.attributes.color.array;
@@ -118,6 +200,11 @@ class StarField {
 
         // Very slow rotation of the Milky Way stripe
         this.milkyWay.rotation.y += 0.0001;
+
+        // Very slow rotation of the spiral galaxy
+        
+        //this.spiralGalaxy.rotation.y += 0.0001;
+        
     }
 }
 
@@ -156,8 +243,10 @@ class Planet {
         canvas.width = 512;
         canvas.height = 256;
         
-        // Clear the canvas with a transparent background
-        context.clearRect(0, 0, canvas.width, canvas.height);
+        // Add slight dark background for better visibility
+        context.fillStyle = 'rgba(0, 0, 0, 0.01)';
+        context.roundRect(10, 10, canvas.width - 20, canvas.height - 20, 20);
+        context.fill();
         
         context.font = '900 50px Orbitron';
         context.fillStyle = 'white';
@@ -188,9 +277,12 @@ class Planet {
         });
 
         const texture = new THREE.CanvasTexture(canvas);
+        texture.premultiplyAlpha = false; // Changed this line
         const material = new THREE.SpriteMaterial({ 
             map: texture,
-            transparent: true 
+            transparent: true,
+            depthWrite: false, // Added this line
+            depthTest: true    // Added this line
         });
         const sprite = new THREE.Sprite(material);
         sprite.position.y = 5;
@@ -277,9 +369,11 @@ class Satellite {
         const context = canvas.getContext('2d');
         canvas.width = 256;
         canvas.height = 128;
-        
-        // Clear the canvas with a transparent background
-        context.clearRect(0, 0, canvas.width, canvas.height);
+               
+        // Add slight dark background for better visibility
+        context.fillStyle = 'rgba(0, 0, 0, 0.01)';
+        context.roundRect(10, 10, canvas.width - 20, canvas.height - 20, 20);
+        context.fill();
         
         context.font = 'Bold 24px Orbitron';
         context.fillStyle = 'white';
@@ -310,14 +404,16 @@ class Satellite {
         });
 
         const texture = new THREE.CanvasTexture(canvas);
-        texture.premultiplyAlpha = true;  // Add this line
+        texture.premultiplyAlpha = false; // Changed this line
         const material = new THREE.SpriteMaterial({ 
             map: texture,
-            transparent: true
+            transparent: true,
+            depthWrite: false, // Added this line
+            depthTest: true    // Added this line
         });
 
         const sprite = new THREE.Sprite(material);
-        sprite.position.y = 1;
+        sprite.position.y = 1+this.lessonText.length/40;
         sprite.scale.set(4, 2, 1);
         return sprite;
     }
@@ -383,10 +479,10 @@ class Universe {
     performOpeningSequence(callback) {
         // Create a curved path for the camera
         const curve = new THREE.CatmullRomCurve3([
-            new THREE.Vector3(400, 150, 40), // Starting position
-            new THREE.Vector3(300, 100, 30),
-            new THREE.Vector3(200, 60, 20),
-            new THREE.Vector3(100, 30, 10),
+            new THREE.Vector3(300, 150, -200), // Starting position
+            new THREE.Vector3(220, 120, -150),
+            new THREE.Vector3(140, 80, -100),
+            new THREE.Vector3(60, 40, -50),
             new THREE.Vector3(20, 10, 20)  // Final position
         ]);
 
@@ -1166,4 +1262,5 @@ window.addEventListener('load', () => {
         console.error('Planet Challenge must be initialized before Universe');
     }
 });
+
 

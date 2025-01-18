@@ -61,6 +61,7 @@
 }
 
 .mission-brief {
+    font-size: 1.2rem;
     background: rgba(255, 157, 0, 0.1);
     padding: 1.5rem;
     border-radius: 10px;
@@ -68,6 +69,7 @@
 }
 
 .concept-explanation {
+    font-size: 1.2rem;
     background: rgba(0, 100, 255, 0.1);
     padding: 1.5rem;
     border-radius: 10px;
@@ -75,6 +77,7 @@
 }
 
 .problem-section {
+    font-size: 1.2rem;
     grid-column: 1 / -1;
     background: rgba(0, 255, 157, 0.1);
     padding: 1.5rem;
@@ -169,14 +172,14 @@
     padding: 2rem;
     border-radius: 10px;
     margin-bottom: 15vh;
-    max-width: 800px;
+    max-width: 750px;
     text-align: center;
 }
 
 .progress-indicator {
     position: absolute;
-    top: 2rem;
-    right: 2rem;
+    top: 0rem;
+    right: 0rem;
     background: rgba(0, 0, 0, 0.7);
     padding: 1rem;
     border-radius: 5px;

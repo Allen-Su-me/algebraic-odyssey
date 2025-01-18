@@ -549,6 +549,7 @@ class WormholeChallenge {
     }
 
     showIntroductionPanel(callback) {
+        this.bgm.currentTime = 0;
         this.bgm.play();
         const panel = document.createElement('div');
         panel.className = 'mission-panel';

@@ -5,7 +5,7 @@ class SpaceshipInterface {
     }
 
     setupEventListeners() {
-        document.querySelector('.close-btn').addEventListener('click', () => this.hide());
+        document.querySelector('.close-btn').addEventListener('click', () => this.leave());
         document.getElementById('submit-answer').addEventListener('click', () => this.checkAnswer());
     }
 
@@ -30,6 +30,12 @@ class SpaceshipInterface {
         this.interface.classList.add('hidden');
     }
 
+    leave(){
+        this.interface.classList.add('hidden');
+        window.universe.statusPanel.style.display = 'block';
+        window.universe.playBgm();
+    }
+
     checkAnswer() {
         const input = document.getElementById('answer-input').value;
         //const correct = this.currentLesson.problem.tolerance===0?input===this.currentLesson.problem.answer:Math.abs(parseFloat(input) - parseFloat(this.currentLesson.problem.answer)) <= this.currentLesson.problem.tolerance;
@@ -46,9 +52,10 @@ class SpaceshipInterface {
     }
 
     returnToUniverse() {
-        // Called when wormhole challenge is complete
+            
         const topicInfo = document.getElementById('topic-info');
         topicInfo.textContent = '';
+        window.universe.statusPanel.style.display = 'block';
         window.universe.playBgm();
     }
 }
