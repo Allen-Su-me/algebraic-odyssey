@@ -53,8 +53,7 @@ class SpaceshipInterface {
 
     returnToUniverse() {
             
-        const topicInfo = document.getElementById('topic-info');
-        topicInfo.textContent = '';
+        document.getElementById('ui-overlay').style.display = 'block';
         window.universe.statusPanel.style.display = 'block';
         window.universe.playBgm();
     }

@@ -911,6 +911,9 @@ class PlanetChallenge {
         setTimeout(() => {
             flash.style.opacity = '1';
             setTimeout(() => {
+                document.getElementById('ui-overlay').style.display = 'block';
+                window.universe.statusPanel.style.display = 'block';
+                window.universe.playBgm();
                 this.container.classList.add('hidden');
                 flash.remove();
             }, 2000);

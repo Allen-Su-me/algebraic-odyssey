@@ -670,8 +670,9 @@ class Universe {
                     </div>
                     <div class="story-panel">
                         <h2>WARNING</h2>
-                        <p>Each planet's knowledge is protected by quantum challenges. You'll need to solve mathematical puzzles while navigating through space hazards.</p>
-                        <p>The fate of humanity rests in your calculations.</p>
+                        <p>Each planet's knowledge is protected by quantum challenges. You'll need to solve algebraical puzzles while navigating through space hazards.</p>
+                        <p>Also, you can vaguely sense a mysterious presence in the depths of space, so be careful...</p>
+                        <p>The fate of humanity rests in your knowledge and skill. Good luck, pilot.</p>
                     </div>
                 </div>
                 <div class="intro-controls">
@@ -853,6 +854,22 @@ class Universe {
         const corona = new THREE.Mesh(coronaGeometry, coronaMaterial);
         this.centralStar.add(corona);
         this.scene.add(this.centralStar);
+        
+
+        // Add click interaction to central star
+        const clickablePlane = new THREE.Mesh(
+            new THREE.PlaneGeometry(8, 8),
+            new THREE.MeshBasicMaterial({ visible: false })
+        );
+        clickablePlane.position.copy(this.centralStar.position);
+        clickablePlane.lookAt(this.camera.position);
+        this.scene.add(clickablePlane);
+        
+        // Store reference for raycasting
+        this.centralStarClickArea = clickablePlane;
+        
+        // Add special class to identify it
+        clickablePlane.userData.isCentralStar = true;
     }
 
     createPlanets() {
@@ -1022,6 +1039,7 @@ class Universe {
             <h2>Planet Status</h2>
             <div class="planet-info">
                 <p>Select a planet to view status</p>
+                <p>Click on the sun to start the final challenge</p>
             </div>
         `;
         document.body.appendChild(this.statusPanel);
@@ -1034,6 +1052,7 @@ class Universe {
             <h2>Planet Status</h2>
             <div class="planet-info">
                 <p>Select a planet to view status</p>
+                <p>Click on the sun to start the final challenge</p>
             </div>
         `;
             return;
@@ -1084,7 +1103,34 @@ class Universe {
 
             this.raycaster.setFromCamera(this.mouse, this.camera);
             
-            // Check planet intersections
+            // Check central star click first
+            const centralStarIntersect = this.raycaster.intersectObject(this.centralStarClickArea);
+            if (centralStarIntersect.length > 0 && !this.focusedPlanet) {
+                if (!window.bossBattle) {
+                    window.bossBattle = new BossBattle();
+                }else if(window.bossBattle.isStarted){
+                    return;
+                }else if(!window.bossBattle.isStarted){
+                    alert("You have played the final challenge before. Please refresh the page to play again.");
+                    return;
+                }
+                // Check if all planets are completed
+                const allPlanetsCompleted = this.planets.every(planet => planet.isChallengeCompleted);
+                if (allPlanetsCompleted) {
+                    window.bossBattle.startGame();
+                    return;
+                } else {
+                    const response=confirm("You have not completed all the planets. Do you want to start the final challenge anyway?");
+                    if(response){
+                        window.bossBattle.startGame();
+                    }else{
+                        window.bossBattle=null;
+                    }
+                    return;
+                }
+            }
+
+            // Regular planet and satellite checks
             const planetIntersects = this.raycaster.intersectObjects(
                 this.planets.map(planet => planet.mesh)
             );
@@ -1159,6 +1205,15 @@ class Universe {
             document.getElementById('topic-info').appendChild(challengeBtn);
             }
             challengeBtn.textContent = 'Start Planet Challenge';
+            challengeBtn.onclick = () => this.startPlanetChallenge(planet);
+        }else{
+            let challengeBtn = document.querySelector('.challenge-btn');
+            if (!challengeBtn) {
+            challengeBtn = document.createElement('button');
+            challengeBtn.classList.add('challenge-btn');
+            document.getElementById('topic-info').appendChild(challengeBtn);
+            }
+            challengeBtn.textContent = 'Start Planet Challenge (for quick demo only since not all lessons are completed)';
             challengeBtn.onclick = () => this.startPlanetChallenge(planet);
         }
         

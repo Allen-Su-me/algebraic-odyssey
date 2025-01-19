@@ -1,0 +1,251 @@
+#boss-battle {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 1000;
+}
+
+#boss-battle.hidden {
+    display: none !important;
+}
+
+#boss-battle.hidden #bossCanvas,
+#boss-battle.hidden .battle-ui {
+    display: none !important;
+}
+
+#bossCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.battle-ui {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    pointer-events: none;
+}
+
+.boss-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.boss-timer {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3rem;
+    color: #ff3333;
+    text-shadow: 0 0 10px #ff3333;
+}
+
+.boss-situation {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    color: #fff;
+    padding: 10px 20px;
+    background: rgba(0,0,0,0.7);
+    border: 2px solid #333;
+    border-radius: 10px;
+}
+
+.grid-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: rgba(0,0,0,0.7);
+    border-radius: 10px;
+    pointer-events: all;
+    position: fixed;
+    bottom: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+}
+
+/* Rest of existing styles */
+
+.grid-controls {
+    display: flex;
+    gap: 10px;
+    margin-right: 20px;
+}
+
+.action-btn {
+    font-family: 'Orbitron', sans-serif;
+    padding: 10px 20px;
+    background: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    background: #444;
+}
+
+.action-btn:disabled {
+    background: #222;
+    color: #666;
+    cursor: not-allowed;
+}
+
+.pod-count {
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    font-size: 1.5rem;
+    margin-left: 20px;
+}
+
+.grid-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60vh;
+    height: 60vh;
+    border: 2px solid rgba(255,255,255,0.3);
+    pointer-events: all;
+}
+
+.boss-intro {
+    background: rgba(0, 0, 0, 0.95) !important;
+    border: 2px solid #ff3333 !important;
+    box-shadow: 0 0 20px rgba(255, 51, 51, 0.5);
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 2rem !important;
+}
+
+.boss-intro h2 {
+    color: #ff3333 !important;
+    text-shadow: 0 0 10px #ff3333;
+    margin-bottom: 1.5rem;
+}
+
+.boss-intro .alert {
+    color: #ff3333;
+    font-size: 1.2em;
+    text-align: center;
+    margin: 1rem 0;
+    padding: 0.5rem;
+    border: 1px solid #ff3333;
+    border-radius: 5px;
+}
+
+.boss-intro h3 {
+    color: #ff3333;
+    margin: 1.5rem 0 0.5rem 0;
+}
+
+.boss-intro ul {
+    list-style: none;
+    padding-left: 1.2rem;
+}
+
+.boss-intro li {
+    margin: 0.5rem 0;
+    color: #fff;
+}
+
+.boss-intro li:before {
+    content: ">";
+    color: #ff3333;
+    margin-right: 0.5rem;
+}
+
+.boss-intro .action {
+    color: #00ffff;
+    font-weight: bold;
+}
+
+.boss-intro .warning {
+    color: #ff3333;
+}
+
+.boss-intro .success {
+    color: #00ff00;
+}
+
+.boss-intro .boss-warning {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(255, 51, 51, 0.1);
+    border-radius: 5px;
+    text-align: center;
+}
+
+.boss-intro .start-mission {
+    background: #ff3333 !important;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.2em;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 2rem;
+    font-family: 'Orbitron', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.boss-intro .start-mission:hover {
+    background: #ff6666 !important;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 51, 51, 0.8);
+}
+
+/* Add scrollbar styling */
+.boss-intro::-webkit-scrollbar {
+    width: 8px;
+}
+
+.boss-intro::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.boss-intro::-webkit-scrollbar-thumb {
+    background: #ff3333;
+    border-radius: 4px;
+}
+
+.boss-intro::-webkit-scrollbar-thumb:hover {
+    background: #ff6666;
+}
+
+/* Adjust eject button position for boss battle */
+#boss-battle .eject-button {
+    top: 20px; /* Move it below the boss status */
+}
+
+/* Adjust confirmation dialog for boss battle */
+#boss-battle .confirm-dialog {
+    background: rgba(0, 0, 0, 0.95);
+    border-color: #ff3333;
+}
+
+#boss-battle .confirm-dialog h3 {
+    color: #ff3333;
+}
+
+#boss-battle .confirm-dialog .confirm {
+    background: #ff3333;
+}
+
+#boss-battle .confirm-dialog .confirm:hover {
+    background: #ff6666;
+}
